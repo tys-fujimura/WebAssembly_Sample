@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+ <head>
+ <meta charset="utf-8">
+ <title>サイトタイトル</title>
+ <meta name="description" content="サイトキャプションを入力">
+ <meta name="keywords" content="サイトキーワードを,で区切って入力">
+ </head>
+ 
+ <body>
+     <h1>WebAssembly Test</h1>
+     <p id="test"></p>
+ </body>
+ <script>
+  const config = {
+        env: {
+            abort:()=>{}
+        }
+    };
+    
+
+    WebAssembly.instantiateStreaming(fetch("/test.wasm"), config)
+     .then(wasm=>{
+        console.log(wasm)
+        const ex = wasm.instance.exports;
+        const exported_func = ex.export_func;
+        const num = exported_func();
+        document.querySelector("#test").innerHTML=num;
+     })
+ </script>
+</html>
